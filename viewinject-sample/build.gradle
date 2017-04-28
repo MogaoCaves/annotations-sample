@@ -1,0 +1,54 @@
+apply plugin: 'com.android.application'
+/**
+ * android-apt插件版本，协助Android Studio处理annotation processors，有2个目的：
+ *  1.允许配置只在编译时作为注解处理器的依赖，而不添加到最后的APK或library
+ *  2.设置原路径，使注解处理器生成的代码能被Android Stduio正确的引用
+ *
+ *  注解处理器传递参数：通过使用apt.arguments
+ *
+ *  注解处理器一般包含API和使用API生成代码的processor，项目依赖可能分为多个部分。
+ *  例如Dagger有两个组件Dagger-compiler和dagger。Dagger-compiler仅用于编译时，运行时必须使用Dagger。
+ *  配置此类组件，apt这样使用：
+ *  dependencies {
+ *      apt 'com.squareup.dagger:dagger-comipler:1.1.0' （编译compiler）
+ *      compile 'com.squareup.dagger:dagger:1.1.0' （给外部使用的api）
+ *  }
+ *
+ *  Q1:什么时候需要这个插件？
+ *  A1：当你需要引入Processors生成的源代码到你的代码中，例如当你使用Dagger2或AndroidAnnotation，
+ *      该插件使得Android Studio可以配置生成资源的build path，避免IDE报错。当使用apt添加依赖时，
+ *      他将不会被包含到最终的APK里。
+ *  Q2:provide vs apt使用注解处理器的不同？
+ *  A2：provide将会导入注解处理器的classes和它的依赖到IED的类路径下，这就意味着你可以附带的引入并使用这些classes。
+ *      例如，当注解处理器使用Guava，你可能错误的import其相关代码到你的Android代码中。当运行时将导致crash。
+ *      而使用apt，注解处理器的classes将不会添加到你当前的类路径下，仅仅用于注解处理过程。
+ *      并且会把所有注解处理器生成的source放到IED的类路径下，方便Android Studio引用。
+ *
+ */
+apply plugin: 'com.neenbedankt.android-apt'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion '23.0.1'
+    defaultConfig {
+        applicationId "com.nelson.annotations_sample"
+        minSdkVersion 16
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:23.0.1'
+    compile project(':viewinject-api')
+    apt project(':viewinject-compiler')
+
+}
