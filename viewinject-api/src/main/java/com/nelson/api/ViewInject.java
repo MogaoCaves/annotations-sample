@@ -1,4 +1,4 @@
-package com.nelson.viewinject_api;
+package com.nelson.api;
 
 /**
  * Created by Nelson on 17/4/26.

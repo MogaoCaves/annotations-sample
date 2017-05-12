@@ -1,4 +1,4 @@
-package com.nelson.annotations_sample;
+package com.nelson.sample;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;

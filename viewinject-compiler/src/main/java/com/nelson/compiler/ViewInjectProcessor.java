@@ -1,6 +1,6 @@
-package com.example.compiler;
+package com.nelson.compiler;
 
-import com.example.annotation.Bind;
+import com.nelson.annotation.Bind;
 import com.google.auto.service.AutoService;
 
 import java.io.IOException;

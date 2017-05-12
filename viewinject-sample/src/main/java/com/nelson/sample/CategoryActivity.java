@@ -1,4 +1,4 @@
-package com.nelson.annotations_sample;
+package com.nelson.sample;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -15,8 +15,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.annotation.Bind;
-import com.nelson.viewinject_api.ViewInjector;
+import com.nelson.annotation.Bind;
+import com.nelson.api.ViewInjector;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package com.example.compiler;
+package com.nelson.compiler;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,7 +41,7 @@ class ProxyInfo {
         StringBuilder builder = new StringBuilder();
         builder.append("// Generated code.Do not modify!\n");
         builder.append("package ").append(packageName).append("; \n\n");
-        builder.append("import com.nelson.viewinject_api.*;\n");
+        builder.append("import com.nelson.api.*;\n");
         builder.append("\n");
 
         builder.append("public class ").append(proxyClassName).append(" implements " + ProxyInfo.PROXY + "<" + typeElement.getQualifiedName() + ">");

@@ -24,3 +24,77 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.0'
     compile project(':viewinject-annotation')
 }
+
+// ---Caution: package zip script----
+
+// generate final jar
+task packageZip(dependsOn: ['androidJar', 'copyJar', 'javadocRelease']) {
+
+}
+
+// assemble api.jar
+task androidJar(type: Jar) {
+    dependsOn assemble
+    group 'build'
+    description 'Package viewinject-api.jar,oh, this is simple!Right?'
+    from zipTree(
+            'build/intermediates/bundles/release/classes.jar')
+    from zipTree(
+            '../viewinject-compiler/build/libs/viewinject-compiler.jar')
+    from zipTree(
+            '../viewinject-annotation/build/libs/viewinject-annotation.jar')
+}
+
+// copy annotations-api.1.0.jar to output dir
+task copyJar(type: Copy) {
+    from('build/libs/viewinject-api.jar')
+    into('../outputs/')
+    rename('viewinject-api.jar', 'annotations-api.' + android.defaultConfig.versionName + '.jar')
+}
+
+// javadoc tasks
+android.libraryVariants.all { variant ->
+    task("javadoc${variant.name.capitalize()}", type: Javadoc) {
+        description "Generates Javadoc for $variant.name."
+        group 'Docs'
+        source = variant.javaCompile.source
+        source "../viewinject-annotation/scr/main/java"
+
+        exclude '**/BuildConfig.java'
+        exclude '**/R.java'
+
+        options.encoding = 'UTF-8'
+    }
+}
+
+// dabao
+task dabao(type: Zip, dependsOn: build) {
+
+    destinationDir = file('../outputs')
+    duplicatesStrategy = 'exclude'
+    archiveName = 'annotations-api.' + android.defaultConfig.versionName + '.zip'
+
+//    from('/') {
+//        include 'README.md'
+//    }
+    from('docs/javadoc') {
+        into 'docs'
+    }
+
+    from('libs') {
+        into 'libs'
+    }
+
+    into('viewinject-api') {
+        from '../viewinject-api' exclude '**/build/**'
+    }
+    from('src/main/res') {
+        into 'res'
+    }
+
+    from(zipTree('build/outputs/aar/viewinject-api-release.aar')) {
+        include 'classes.jar'
+        rename 'classes.jar', 'annotations-api.' + android.defaultConfig.versionName + '.jar'
+        into 'libs'
+    }
+}

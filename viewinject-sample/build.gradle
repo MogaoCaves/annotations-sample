@@ -49,6 +49,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile project(':viewinject-api')
+    // 引用一个注解处理器的库，这个库的代码最终不会进入编译出来的APK里面
     apt project(':viewinject-compiler')
 
 }

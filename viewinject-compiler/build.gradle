@@ -5,6 +5,9 @@ dependencies {
     // auto-service库可以生成META-INF等信息
     compile 'com.google.auto.service:auto-service:1.0-rc2'
     compile project(':viewinject-annotation')
+
+    // Square javapoet 生成Java源代码
+    compile 'com.squareup:javapoet:1.8.0'
 }
 
 sourceCompatibility = "1.7"
